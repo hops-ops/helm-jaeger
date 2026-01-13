@@ -1,0 +1,38 @@
+# code: language=yaml
+#
+# Helm release for jaeger
+#
+
+{{- $j := $state.jaeger }}
+
+---
+apiVersion: helm.m.crossplane.io/v1beta1
+kind: Release
+metadata:
+  name: {{ $j.releaseName }}
+  annotations:
+    {{ setResourceNameAnnotation "helm-release-jaeger" }}
+  labels: {{ $j.labels | toJson }}
+spec:
+  managementPolicies: {{ $j.managementPolicies | toJson }}
+  forProvider:
+    chart:
+      name: jaeger
+      repository: https://jaegertracing.github.io/helm-charts
+      version: 3.4.1
+    namespace: {{ $j.namespace }}
+    {{- if $j.overrideAllValues }}
+    values:
+      {{- toYaml $j.overrideAllValues | nindent 6 }}
+    {{- else }}
+    values:
+      fullnameOverride: jaeger
+      nameOverride: jaeger
+      {{- if $j.values }}
+      {{- toYaml $j.values | nindent 6 }}
+      {{- end }}
+    {{- end }}
+  rollbackLimit: 3
+  providerConfigRef:
+    name: {{ $j.providerConfigRef.name }}
+    kind: {{ $j.providerConfigRef.kind }}

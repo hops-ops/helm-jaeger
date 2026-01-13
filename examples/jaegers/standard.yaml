@@ -1,0 +1,15 @@
+apiVersion: helm.hops.ops.com.ai/v1alpha1
+kind: Jaeger
+metadata:
+  name: jaeger
+  namespace: example-env
+spec:
+  clusterName: example-cluster
+  labels:
+    team: platform
+  namespace: jaeger
+  values:
+    allInOne:
+      enabled: true
+    storage:
+      type: memory
