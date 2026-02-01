@@ -2,4 +2,4 @@ apiVersion: v2
 name: helm-jaeger
 version: 0.0.0
 description: GitOps packaging for the Jaeger Crossplane configuration
-appVersion: 4.4.2
+appVersion: 4.4.3
